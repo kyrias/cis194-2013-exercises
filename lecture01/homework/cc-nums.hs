@@ -14,13 +14,18 @@ toDigitsRev n = if n > 0 then [n `mod` 10] ++ toDigitsRev (n `div` 10 )
 
 -- Excercise 2
 --
-interleave xs ys = concatMap (\(x, y)->[x, y]) (zipWith (,) xs ys)
+-- (|||) operator stolen from
+-- https://mail.haskell.org/pipermail/libraries/2008-August/010496.html
+(|||) :: [a] -> [a] -> [a]
+[]     ||| ys = ys
+(x:xs) ||| ys = x : ys ||| xs
+infixr 5 |||
 
 doubleEveryOther :: [Integer] -> [Integer]
 doubleEveryOther []  = []
 doubleEveryOther [n] = [n]
 doubleEveryOther n   =
-    reverse $ interleave xs (map (2*) ys)
+    reverse $ xs ||| (map (2*) ys)
         where (xs, ys) = splitList $ reverse n
 
 
