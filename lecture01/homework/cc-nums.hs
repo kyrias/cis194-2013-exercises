@@ -45,6 +45,4 @@ sumDigits n = sum $ concatMap toDigits n
 --
 validate :: Integer -> Bool
 validate n =
-    if sumDigits [n] `mod` 10 == 0
-    then True
-    else False
+    sumDigits (doubleEveryOther (toDigits (n))) `mod` 10 == 0
