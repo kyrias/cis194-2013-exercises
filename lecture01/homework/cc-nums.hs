@@ -29,6 +29,13 @@ doubleEveryOther n   =
         where (xs, ys) = splitList $ reverse n
 
 
+doubleEveryOther' :: [Integer] -> [Integer]
+doubleEveryOther' xs
+    | len `mod` 2 == 0  = zipWith (*) xs $ cycle [2,1]
+    | len `mod` 2 == 1  = zipWith (*) xs $ cycle [1,2]
+    where len = length xs
+
+
 splitList []  = ([], [])
 splitList [x] = ([x], [])
 splitList (x:y:zs) = (x:xs, y:ys)
