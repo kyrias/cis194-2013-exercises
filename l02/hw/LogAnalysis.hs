@@ -1,6 +1,7 @@
 {-# OPTIONS_GHC -Wall #-}
 module LogAnalysis where
 
+import qualified Data.List as DL
 import Text.Read
 import Log
 
@@ -98,3 +99,19 @@ whatWentWrongHelper (l:ls) =
 (!!!) :: IO [a] -> Int -> IO a
 (!!!) x i = do xs <- x
                return $ xs !! i
+
+
+balanceSubTree :: MessageTree -> MessageTree
+balanceSubTree mt =
+    insertList messages' initialTree
+    where messages    = inOrder mt
+          middle      = messages !! (length messages `div` 2)
+          messages'   = DL.delete middle messages
+          initialTree = insert middle Leaf
+
+
+balanceTree :: MessageTree -> MessageTree
+balanceTree Leaf = Leaf
+balanceTree t    =
+    Node (balanceTree l) m (balanceTree r)
+    where (Node l m r) = balanceSubTree t
