@@ -102,8 +102,7 @@ whatWentWrongHelper (l:ls) =
 
 
 balanceSubTree :: MessageTree -> MessageTree
-balanceSubTree mt =
-    insertList messages' initialTree
+balanceSubTree mt = insertList messages' initialTree
     where messages    = inOrder mt
           middle      = messages !! (length messages `div` 2)
           messages'   = DL.delete middle messages
@@ -112,6 +111,5 @@ balanceSubTree mt =
 
 balanceTree :: MessageTree -> MessageTree
 balanceTree Leaf = Leaf
-balanceTree t    =
-    Node (balanceTree l) m (balanceTree r)
-    where (Node l m r) = balanceSubTree t
+balanceTree tree = Node (balanceTree l) m (balanceTree r)
+    where (Node l m r) = balanceSubTree tree
