@@ -53,7 +53,7 @@ parse x = map parseMessage $ lines x
 -- Exercise 2
 --
 insert :: LogMessage -> MessageTree -> MessageTree
-insert newMesg     Leaf = Node Leaf newMesg Leaf
+insert newMesg Leaf = Node Leaf newMesg Leaf
 insert newMesg@(LogMessage _ newTs _)  (Node l oldMesg@(LogMessage _ oldTs _) r)
     | newTs < oldTs = Node (insert newMesg l) oldMesg r
     | otherwise     = Node l oldMesg (insert newMesg r)
