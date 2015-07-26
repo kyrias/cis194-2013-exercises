@@ -102,3 +102,10 @@ whatWentWrongHelper (l:ls) =
     (Just (LogMessage _ _ s)) -> s : whatWentWrongHelper ls
     _                         -> whatWentWrongHelper ls
     where message = filterError l 50
+
+
+---
+--
+(!!!) :: IO [a] -> Int -> IO a
+(!!!) x i = do xs <- x
+               return $ xs !! i
