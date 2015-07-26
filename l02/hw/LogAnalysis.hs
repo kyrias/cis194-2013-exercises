@@ -15,10 +15,12 @@ parseMessage xs =
                  Nothing  -> Unknown xs
                  (Just t) -> LogMessage mt t str
     where w     = words xs
-          isErr = (head xs) == 'E'
+          wLvl  = if head xs == 'E'
+                  then drop 2 w
+                  else drop 1 w
           lvl   = parseLevel w
-          ts    = parseTs isErr w
-          str   = parseString isErr w
+          ts    = readMaybe (head wLvl) :: Maybe Int
+          str   = unwords (drop 1 wLvl)
 
 
 parseLevel :: [String] -> Maybe MessageType
@@ -28,21 +30,8 @@ parseLevel (x:xs)
     | x == "E" = case severity of
                  (Just s) -> Just $ Error s
                  Nothing  -> Nothing
-    where severity = readMaybe (xs !! 0) :: Maybe Int
-
+    where severity = readMaybe (head xs) :: Maybe Int
 parseLevel _ = Nothing
-
-
-parseTs :: Bool -> [String] -> Maybe Int
-parseTs isErr xs = readMaybe (xs !! index) :: Maybe Int
-    where index = if isErr then 2 else 1
-
-
-parseString :: Bool -> [String] -> String
-parseString isErr xs
-    | isErr     = unwords (drop 3 xs)
-    | otherwise = unwords (drop 2 xs)
-
 
 
 parse :: String -> [LogMessage]
